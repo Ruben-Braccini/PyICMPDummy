@@ -1,0 +1,128 @@
+# ID
+print('Programa de Gerenciamento e Controle de Estoques (GCE) - powered by Braccini Industries’)
+
+# Indice
+prodList = list()
+prodCod = int(0)
+
+
+# Função "Consultar Produto".
+def consultarProduto():
+    while True:
+        try:
+            print('Consulta de Produtos:')
+            opcao = validaInt(
+                'Informe a opção desejada.\n'
+                '1. Consultar todos os produtos cadastrados.\n'
+                '2. Consultar por CÓDIGO do produto.\n'
+                '3. Consultar por FABRICANTE do produto.\n'
+                '4. Retornar ao menu anterior.\n> ', 1, 4
+            )
+            if opcao == (int(1)):
+                print('Consultando todos.')
+                for (produto) in prodList:
+                    for (key, value) in (produto.items()):
+                        print('{}: {}'.format(key, value))
+            elif opcao == (int(2)):
+                while True:
+                    try:
+                        print('Consultando por Código.')
+                        entry = int(input('Informe o Código:\n> '))
+                        for (produto) in prodList:
+                            if produto['Código'] == entry:
+                                for (key, value) in (produto.items()):
+                                    print('{}: {}'.format(key, value))
+                                return
+                    except:
+                        print('Operação inválida. Tente novamente.')
+                        continue
+                    print('Código não localizado. Por favor, digite um código válido.')
+                    return
+            elif opcao == (int(3)):
+                while True:
+                    try:
+                        print('Consultando por FABRICANTE.')
+                        entry = input('Informe a Fabricante:\n> ').upper()
+                        for (produto) in prodList:
+                            if produto['Fabricante'] == entry:
+                                for (key, value) in (produto.items()):
+                                    print('{}: {}'.format(key, value))
+                        return
+                    except:
+                        print('Operação inválida. Verifique os dados digitados.')
+                        continue
+            else:
+                return
+        except:
+            print('Operação inválida. Verifique os dados digitados.')
+            continue
+
+
+# Função "Cadastrar Produto".
+def cadastrarProduto(prodCodigo):
+    print('Cadastro de Produtos:')
+    print('Código do Produto: {}'.format(prodCodigo))
+    nomeProduto = input('Informe o NOME do produto: ').upper()
+    fabricanteProduto = input('Informe a FABRICANTE do produto: ').upper()
+    valorProduto = float(input('Informe o VALOR do produto: R$ '))
+    #Lib/Dicion.
+    produservi = dict({
+        'Código': prodCodigo,
+        'Produto': nomeProduto,
+        'Fabricante': fabricanteProduto,
+        'Valor (R$)': valorProduto
+    })
+    prodList.append(produservi.copy())
+    print('Produto Cadastrado.')
+
+
+# Função "Remover Produto".
+def removerProduto():
+    print('Exclusão de Produtos:')
+    while True:
+        try:
+            print('Excluíndo por CÓDIGO.')
+            entry = int(input('Informe o Código:\n> '))
+            for (produto) in prodList:
+                if produto['Código'] == entry:
+                    prodList.remove(produto)
+                    return
+        except:
+            print('Operação inválida. Tente novamente.')
+            continue
+        print('Código não localizado. Verifique os dados digitados e tente novamente.')
+        return
+
+
+# Validação dos dados (int)
+def validaInt(q, min, max):
+    x = int(input(q))
+    while (x < min) or (x > max):
+        x = int(input(q))
+    return x
+
+
+# Interface
+while True:
+    try:
+        op = int(validaInt(
+            'Digite o número correspondente à opção desejada.\n'
+            '1. Cadastrar um produto:\n'
+            '2. Filtrar produtos cadastrados:\n'
+            '3. Exclusão de produtos cadastrados:\n'
+            '4. Sair do programa.\n> ', 1, 4
+        ))
+        if op == (int(1)):
+            prodCod += 1
+            cadastrarProduto(prodCod)
+        elif op == (int(2)):
+            consultarProduto()
+        elif op == (int(3)):
+            removerProduto()
+        else:
+            print('Programa encerrado. Obrigado por utilizar Programa de Gerenciamento e Controle de Estoques (GCE) - '
+                  'powered by Ruben Dario Braccini Neto')
+            break
+    except:
+        print('Opção inválida. Verifique os dados digitados e tente novamente.')
+        continue
